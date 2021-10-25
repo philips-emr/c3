@@ -73,7 +73,9 @@ var CLASS = c3_chart_internal_fn.CLASS = {
     dragarea: 'c3-dragarea',
     EXPANDED: '_expanded_',
     SELECTED: '_selected_',
-    INCLUDED: '_included_'
+    INCLUDED: '_included_',
+    REFERENCE_VERTICAL_RANGE: 'c3-reference-vertical-range',
+    REFERENCE_HORIZONTAL_RANGE: 'c3-reference-horizontal-range',
 };
 c3_chart_internal_fn.generateClass = function (prefix, targetId) {
     return " " + prefix + " " + prefix + this.getTargetSelectorSuffix(targetId);

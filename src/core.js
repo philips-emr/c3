@@ -13,7 +13,7 @@ function inherit(base, derived) {
     if (Object.create) {
         derived.prototype = Object.create(base.prototype);
     } else {
-        var f = function f() {};
+        var f = function f() { };
         f.prototype = base.prototype;
         derived.prototype = new f();
     }
@@ -288,9 +288,26 @@ c3_chart_internal_fn.initWithData = function (data) {
     $$.initGrid();
 
     // Define g for chart area
-    main.append('g')
+    const mainChartArea = main.append('g');
+    mainChartArea
         .attr("clip-path", $$.clipPath)
         .attr('class', CLASS.chart);
+
+    mainChartArea
+        .append('g')
+        .attr('class', 'c3-reference-vertical-range')
+        .append('rect')
+        .attr('height', `${$$.height}px`)
+        .attr('width', `${$$.width}px`)
+        .attr('fill', 'rgba(0,0,255,0.2)');
+
+    mainChartArea
+        .append('g')
+        .attr('class', 'c3-reference-horizontal-range')
+        .append('rect')
+        .attr('height', `${$$.height}px`)
+        .attr('width', `${$$.width}px`)
+        .attr('fill', 'rgba(0,0,255,0.2)');
 
     // Grid lines
     if (config.grid_lines_front) { $$.initGridLines(); }
@@ -331,6 +348,8 @@ c3_chart_internal_fn.initWithData = function (data) {
             withTransitionForAxis: false
         });
     }
+
+    if ($$.initRanges) { $$.initRanges(); }
 
     // Bind resize event
     $$.bindResize();
@@ -456,7 +475,7 @@ c3_chart_internal_fn.updateTargets = function (targets) {
 c3_chart_internal_fn.showTargets = function () {
     var $$ = this;
     $$.svg.selectAll('.' + CLASS.target).filter(function (d) { return $$.isTargetToShow(d.id); })
-      .transition().duration($$.config.transition_duration)
+        .transition().duration($$.config.transition_duration)
         .style("opacity", 1);
 };
 
@@ -579,7 +598,7 @@ c3_chart_internal_fn.redraw = function (options, transitions) {
         .attr("x", $$.width / 2)
         .attr("y", $$.height / 2)
         .text(config.data_empty_label_text)
-      .transition()
+        .transition()
         .style('opacity', targetsToShow.length ? 0 : 1);
 
     // grid
@@ -673,14 +692,14 @@ c3_chart_internal_fn.redraw = function (options, transitions) {
                 waitForDraw.add(t);
             });
         })
-        .call(waitForDraw, function () {
-            if (flow) {
-                flow();
-            }
-            if (config.onrendered) {
-                config.onrendered.call($$);
-            }
-        });
+            .call(waitForDraw, function () {
+                if (flow) {
+                    flow();
+                }
+                if (config.onrendered) {
+                    config.onrendered.call($$);
+                }
+            });
     }
     else {
         $$.redrawBar(drawBar);
@@ -699,6 +718,7 @@ c3_chart_internal_fn.redraw = function (options, transitions) {
     $$.mapToIds($$.data.targets).forEach(function (id) {
         $$.withoutFadeIn[id] = true;
     });
+    $$.resizeRanges();
 };
 
 c3_chart_internal_fn.updateAndRedraw = function (options) {
@@ -821,7 +841,7 @@ c3_chart_internal_fn.transformMain = function (withTransition, transitions) {
     if (transitions && transitions.axisX) {
         xAxis = transitions.axisX;
     } else {
-        xAxis  = $$.main.select('.' + CLASS.axisX);
+        xAxis = $$.main.select('.' + CLASS.axisX);
         if (withTransition) { xAxis = xAxis.transition(); }
     }
     if (transitions && transitions.axisY) {
@@ -900,7 +920,7 @@ c3_chart_internal_fn.observeInserted = function (selection) {
         window.console.error("MutationObserver not defined.");
         return;
     }
-    observer= new MutationObserver(function (mutations) {
+    observer = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             if (mutation.type === 'childList' && mutation.previousSibling) {
                 observer.disconnect();
@@ -926,7 +946,7 @@ c3_chart_internal_fn.observeInserted = function (selection) {
             }
         });
     });
-    observer.observe(selection.node(), {attributes: true, childList: true, characterData: true});
+    observer.observe(selection.node(), { attributes: true, childList: true, characterData: true });
 };
 
 c3_chart_internal_fn.bindResize = function () {
