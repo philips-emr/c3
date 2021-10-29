@@ -183,11 +183,13 @@ c3_chart_internal_fn.initRanges = function () {
             $$.updateReferenceRange(`.${CLASS.REFERENCE_VERTICAL_RANGE}`, `translate(${translate}px)`, null, `${totalWidth}px`);
             // $$.updateReferenceRange(`.${CLASS.REFERENCE_VERTICAL_RANGE}`, `translate(${inverseLeft.node().getBoundingClientRect().width}px)`, null, `${range.node().getBoundingClientRect().width}px`);
         });
-}
+};
 
 c3_chart_internal_fn.resizeRanges = function () {
-
     const $$ = this;
+    if(!$$.config.data_ranges){
+        return;
+    }
     const verticalRange = $$.selectChart.select("#slider-distance");
     verticalRange.style('height', `${$$.height}px`);
     const divVertical = verticalRange.select("div");
@@ -199,28 +201,23 @@ c3_chart_internal_fn.resizeRanges = function () {
     divHorizontal.select('.thumb-right').style('left', `${$$.width - 15}px`);
 
     $$.setStartValuesRanges();
-}
+};
 
 c3_chart_internal_fn.setStartValuesRanges = function () {
     const $$ = this;
     const config = $$.config;
     const starter = config.data_starterRangeIndex;
     $$.updateRange(starter);
-}
+};
 
 c3_chart_internal_fn.updateRange = function (index) {
     const $$ = this;
     const config = $$.config;
-
-    if(!config.data_ranges){
-        return;
-    }
-
     const range = config.data_ranges[index].value;
 
     $$.updateVerticalRange(range.verticalEndValue, range.verticalStartValue);
     $$.updateHorizontalRange(range.horizontalEndValue, range.horizontalStartValue);
-}
+};
 
 c3_chart_internal_fn.updateHorizontalRange = function (horizontalEndValue, horizontalStartValue) {
     const $$ = this;
@@ -248,7 +245,7 @@ c3_chart_internal_fn.updateHorizontalRange = function (horizontalEndValue, horiz
     const translate = horizontalStartValue * ($$.width + 2) / max;
     const totalWidth = (horizontalEndValue * ($$.width + 2) / max) - translate;
     $$.updateReferenceRange(`.${CLASS.REFERENCE_VERTICAL_RANGE}`, `translate(${translate}px)`, null, `${totalWidth}px`);
-}
+};
 
 c3_chart_internal_fn.updateVerticalRange = function (verticalEndValue, verticalStartValue) {
     const $$ = this;
@@ -276,8 +273,7 @@ c3_chart_internal_fn.updateVerticalRange = function (verticalEndValue, verticalS
     const translate = $$.height - (verticalEndValue * ($$.height + 2) / max);
     const totalHeight = $$.height - (verticalStartValue * ($$.height + 2) / max) - translate;
     $$.updateReferenceRange(`.${CLASS.REFERENCE_HORIZONTAL_RANGE}`, `translate(0px, ${translate}px)`, `${totalHeight}px`, null);
-}
-
+};
 
 c3_chart_internal_fn.updateReferenceRange = function (htmlClass, translate, height, width) {
     const $$ = this;
@@ -287,7 +283,7 @@ c3_chart_internal_fn.updateReferenceRange = function (htmlClass, translate, heig
     } else if (width != null) {
         $$.selectChart.select(`${htmlClass} rect`).style('width', width);
     }
-}
+};
 
 c3_chart_internal_fn.setReferenceRange = function (index) {
     this.updateRange(index);
