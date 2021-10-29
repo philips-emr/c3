@@ -288,7 +288,7 @@ c3_chart_internal_fn.initWithData = function (data) {
     $$.initGrid();
 
     // Define g for chart area
-    const mainChartArea = main.append('g');
+    var mainChartArea = main.append('g');
     mainChartArea
         .attr("clip-path", $$.clipPath)
         .attr('class', CLASS.chart);
@@ -297,16 +297,16 @@ c3_chart_internal_fn.initWithData = function (data) {
         .append('g')
         .attr('class', 'c3-reference-vertical-range')
         .append('rect')
-        .attr('height', `${$$.height}px`)
-        .attr('width', `${$$.width}px`)
+        .attr('height', $$.height+"px")
+        .attr('width', $$.width+"px")
         .attr('fill', 'rgba(0,0,255,0.2)');
 
     mainChartArea
         .append('g')
         .attr('class', 'c3-reference-horizontal-range')
         .append('rect')
-        .attr('height', `${$$.height}px`)
-        .attr('width', `${$$.width}px`)
+        .attr('height', $$.height+"px")
+        .attr('width', $$.width+"px")
         .attr('fill', 'rgba(0,0,255,0.2)');
 
     // Grid lines
