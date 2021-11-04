@@ -4029,6 +4029,10 @@
         var starter = config.data_starterRangeIndex;
         var range = config.data_ranges[starter];
 
+        if(!range){
+            return;
+        }
+
         var verticalRange = $$.selectChart.append("div").attr('class', 'slider-vertical').attr('id', "slider-distance").style('height', $$.height + 'px');
         var divVertical = verticalRange.append("div");
         divVertical.append("div").attr('class', 'inverse-down').style('height', '0%');
