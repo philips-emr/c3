@@ -171,6 +171,10 @@ c3_chart_internal_fn.updateRange = function (index) {
     var config = $$.config;
     var range = config.data_ranges[index];
 
+    if(!range){
+        return;
+    }
+
     $$.updateVerticalRange(range.verticalEndValue, range.verticalStartValue);
     $$.updateHorizontalRange(range.horizontalEndValue, range.horizontalStartValue);
 };
@@ -207,7 +211,7 @@ c3_chart_internal_fn.updateVerticalRange = function (verticalEndValue, verticalS
     var max = $$.y.domain()[1];
     var min = $$.y.domain()[0];
     var verticalSlider = $$.selectChart.select("#slider-distance");
-    
+
     var divVertical = verticalSlider.select("div");
 
     var results = $$.calculateHorizontalRangePosition(min, max);
