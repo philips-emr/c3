@@ -207,22 +207,8 @@ c3_chart_internal_fn.updateVerticalRange = function (verticalEndValue, verticalS
     var max = $$.y.domain()[1];
     var min = $$.y.domain()[0];
     var verticalSlider = $$.selectChart.select("#slider-distance");
-    // var upValue = verticalEndValue / parseFloat(max) * 100;
-    // var upDeslocation = ($$.height - 15) * upValue / 100 + 'px';
-    // var downValue = verticalStartValue / parseFloat(max) * 100;
-    // var downDeslocation = ($$.height - 15) * downValue / 100 + 'px';
+    
     var divVertical = verticalSlider.select("div");
-
-    // var inverseUp = divVertical.select('.inverse-up');
-    // var verticalRange = divVertical.select('.range');
-
-    // inverseUp.style('height', 100 - upValue + '%');
-    // divVertical.select('.inverse-down').style('height', downValue + '%');
-    // verticalRange.style('top', 100 - upValue + '%').style('bottom', downValue + '%');
-    // divVertical.select('.thumb-up').style('bottom', upDeslocation);
-    // divVertical.select('.thumb-down').style('bottom', downDeslocation);
-    // verticalSlider.select('input#up').attr('value', verticalEndValue);
-    // verticalSlider.select('input#down').attr('value', verticalStartValue);
 
     var results = $$.calculateHorizontalRangePosition(min, max);
 
