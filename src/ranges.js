@@ -1,18 +1,6 @@
 c3_chart_internal_fn.initRanges = function () {
     var $$ = this;
-    var config = $$.config;
-    if (!config.data_ranges || !Object.keys($$.config.data_ranges).length || !$$.config.data_starterRangeIndex) {
-        return;
-    }
-
-    var starter = config.data_starterRangeIndex;
-    var range = config.data_ranges[starter];
-
-    if(!range){
-        return;
-    }
-
-    var verticalRange = $$.selectChart.append("div").attr('class', 'slider-vertical').attr('id', "slider-distance").style('height', $$.height + 'px');
+    var verticalRange = $$.selectChart.append("div").attr('class', 'slider-vertical ng-hide').attr('id', "slider-distance").style('height', $$.height + 'px');
     var divVertical = verticalRange.append("div");
     divVertical.append("div").attr('class', 'inverse-down').style('height', '0%');
     divVertical.append("div").attr('class', 'inverse-up').style('height', '0%');
@@ -21,7 +9,7 @@ c3_chart_internal_fn.initRanges = function () {
     divVertical.append("span").attr('class', 'thumb thumb-up').style('bottom', $$.height - 15 + 'px');
     var downInput = verticalRange.append("input");
     var upInput = verticalRange.append("input");
-    downInput.attr("id", 'down').attr('class', 'down').style('-webkit-appearance', 'slider-vertical').attr("value", range.verticalStartValue).attr('min', $$.y.domain()[0]).attr('max', $$.y.domain()[1]).attr('step', '0.1').attr('type', 'range').on('input', function () {
+    downInput.attr("id", 'down').attr('class', 'down').style('-webkit-appearance', 'slider-vertical').attr("value", $$.y.domain()[0]).attr('min', $$.y.domain()[0]).attr('max', $$.y.domain()[1]).attr('step', '0.1').attr('type', 'range').on('input', function () {
         var parent = $$.selectChart.select('.slider-vertical');
         var up = parent.select('#up');
         var divVertical = parent.select('div');
@@ -38,7 +26,7 @@ c3_chart_internal_fn.initRanges = function () {
 
         $$.updateReferenceRange('.' + CLASS.REFERENCE_HORIZONTAL_RANGE, 'translate(0px, ' + results.translate + 'px)', results.totalHeight + 'px', null);
     });
-    upInput.attr("id", 'up').attr('class', 'up').style('-webkit-appearance', 'slider-vertical').attr("value", range.verticalEndValue).attr('min', $$.y.domain()[0]).attr('max', $$.y.domain()[1]).attr('step', '0.1').attr('type', 'range').on('input', function () {
+    upInput.attr("id", 'up').attr('class', 'up').style('-webkit-appearance', 'slider-vertical').attr("value", $$.y.domain()[1]).attr('min', $$.y.domain()[0]).attr('max', $$.y.domain()[1]).attr('step', '0.1').attr('type', 'range').on('input', function () {
         var parent = $$.selectChart.select('.slider-vertical');
         var down = parent.select('#down');
         var divVertical = parent.select('div');
@@ -55,6 +43,7 @@ c3_chart_internal_fn.initRanges = function () {
 
         $$.updateReferenceRange('.' + CLASS.REFERENCE_HORIZONTAL_RANGE, 'translate(0px, ' + results.translate + 'px)', results.totalHeight + 'px', null);
     });
+
     $$.horizontalRange = $$.d3.select('[graph-id="' + $$.config.bindto.replace('#', '') + '"] .slider-horizontal').style('width', $$.width + 'px').style('left', $$.margin.left + 'px').style('position', 'relative');
     $$.horizontalRange.selectAll('input').remove();
     $$.horizontalRange.selectAll('div').remove();
@@ -149,9 +138,6 @@ c3_chart_internal_fn.calculateVerticalRangePosition = function (min, max) {
 c3_chart_internal_fn.resizeRanges = function () {
     var $$ = this;
 
-    if (!$$.config.data_ranges || !Object.keys($$.config.data_ranges).length || !$$.config.data_starterRangeIndex) {
-        return;
-    }
 
     var verticalRange = $$.selectChart.select("#slider-distance");
     verticalRange.style('height', $$.height + 'px');
@@ -159,6 +145,7 @@ c3_chart_internal_fn.resizeRanges = function () {
         .select('[graph-id="' + $$.config.bindto.replace('#', '') + '"] .slider-horizontal')
         .style('width', $$.width + 'px')
         .style('left', $$.margin.left + 'px');
+
 
     $$.setStartValuesRanges();
 };
@@ -174,19 +161,20 @@ c3_chart_internal_fn.updateRange = function (index) {
     var $$ = this;
     var config = $$.config;
     var range = config.data_ranges[index];
-
     if(!range){
-        return;
+        $$.updateVerticalRange($$.y.domain()[1], $$.y.domain()[0]);
+        $$.updateHorizontalRange($$.x.domain()[1]-1, $$.x.domain()[0]);
+    } else {
+        $$.updateVerticalRange(range.verticalEndValue, range.verticalStartValue);
+        $$.updateHorizontalRange(range.horizontalEndValue, range.horizontalStartValue);
     }
-
-    $$.updateVerticalRange(range.verticalEndValue, range.verticalStartValue);
-    $$.updateHorizontalRange(range.horizontalEndValue, range.horizontalStartValue);
 };
 
 c3_chart_internal_fn.updateHorizontalRange = function (horizontalEndValue, horizontalStartValue) {
     var $$ = this;
     $$.horizontalEndValue = horizontalEndValue;
     $$.horizontalStartValue = horizontalStartValue;
+
     var max = $$.x.domain()[1] - 1;
     var min = $$.x.domain()[0];
     var horizontalSlider = $$.d3.select('[graph-id="' + $$.config.bindto.replace('#', '') + '"] .slider-horizontal');
