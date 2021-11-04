@@ -295,7 +295,7 @@ c3_chart_internal_fn.initWithData = function (data) {
 
     mainChartArea
         .append('g')
-        .attr('class', 'c3-reference-vertical-range')
+        .attr('class', 'c3-reference-vertical-range ng-hide')
         .append('rect')
         .attr('height', $$.height+"px")
         .attr('width', $$.width+"px")
@@ -303,7 +303,7 @@ c3_chart_internal_fn.initWithData = function (data) {
 
     mainChartArea
         .append('g')
-        .attr('class', 'c3-reference-horizontal-range')
+        .attr('class', 'c3-reference-horizontal-range ng-hide')
         .append('rect')
         .attr('height', $$.height+"px")
         .attr('width', $$.width+"px")
