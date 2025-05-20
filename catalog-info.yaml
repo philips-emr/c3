@@ -1,0 +1,13 @@
+# yamllint disable-file
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+    name: "emr-c3"
+    description: "c3 is a D3-based reusable chart library that enables deeper integration of charts into web applications."
+    title: "c3"
+    tags:
+        - emr
+spec:
+    type: "library"
+    owner: "group:default/emr-tasy-framework-contributors"
+    lifecycle: "production"
